@@ -327,7 +327,8 @@ def parse_resp(jsonReq):
 
         add_bus_from_resp(bus)
 
-        
+        business = Business.query.filter(Business.yelp_id==bus.yelp_id).first()
+        add_db_id_to_temp_obj(bus,business.id)
         
         add_cat_from_resp(bus)
 
@@ -340,8 +341,6 @@ def add_bus_from_resp(bus):
         
         db.session.add(business)
         db.session.commit()
-
-        add_db_id_to_temp_obj(bus,business.id)
         return bus
     return bus
 
