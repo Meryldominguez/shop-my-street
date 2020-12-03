@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %} {{business.name}}'s Profile {% endblock %}
+
+{% block content %}
+{% include discovery_modal.html %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+  <div class="m-3">
+          <div class="card border-secondary col-md-12">
+              <div class="card-header">
+                  <div class="row justify-content-between">
+                      <h3 style>{{business.name}}<h3>
+                      <small class="float-right">
+                          {% if db_bus in g.user.connections %}
+                          <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#DiscoveryModal">
+                          Edit my Discovery!
+                          </button>
+                          {% else %}
+                          <form id="add/{{db_bus.id}}" class="disc-form">
+                          <button 
+                          type="submit" class=" btn-sm btn-primary" data-toggle="modal"
+                          data-target="#DiscoveryModal">
+                          Add to my Discoveries!
+                          </button>
+                          </form>
+                          {% endif %}
+                      </small>
+                  </div>
+                  <br>
+                  <h6 class="card-subtitle text-muted">Rating:{{business.rating}}</h6>
+              </div>
+              <div class="card-body row justify-content-around">
+                  <div class="col">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr class="table-light">
+                            <th scope="row">Phone</th>
+                            <td>{{business.phone}}</td>
+                        </tr>
+                        <tr class="table-light">
+                            <th scope="row">Address</th>
+                            <td>{{business.address[0]}}
+                              <br>
+                              {{business.address[1]}}
+                            </td>
+                        </tr>
+                        <tr class="table-light">
+                            <th scope="row">Categories</th>
+                            <!-- <td>
+                              {% for cat in business.categories %}
+                              <a href="/category?q={{cat}}">{{cat}}</a>
+                              {% endfor %}
+                            </td> -->
+                            <td>{{",".join(business.categories)}}</td>
+                        </tr>
+                        {% if db_bus in g.user.connections %}
+                        <tr class="table-light">
+                            <th scope="row">Notes</th>
+                            <td>{{disc.notes}}</td>
+                        </tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                  {% if business.photos %}
+                  <div class="col">
+                    {% for img in business.photos %}
+                    <img src="{{img}}"style="width: 200px; height: 200px" alt="an image of {{business.name}}" class="img-thumbnail img">
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+              </div>
+          </div>
+  </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} {{g.user}}'s Discoveries {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>My Discoveries</h2>
+    <div class="list-group">
+        {% for disc in g.user.discoveries %}
+    
+        <a href="/business/{{disc.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{disc.discovery.name}}</h5>
+            {% if disc.favorite %}
+           <i class="fas fa-star text-info">
+
+           </i>
+            {% endif %}
+
+          </div>
+          <p class="mb-1">
+              {% if disc.notes %}
+              {{disc.notes}}
+              {% else %}
+              No Notes on this Discovery
+              {% endif %}
+            </p>
+          <!-- <small>Timestamp?</small> -->
+        </a>
+        {% endfor %}
+      </div>
+    
+</div>
+{% endblock %}

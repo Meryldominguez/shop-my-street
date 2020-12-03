@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} Oh no! 404{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h2 class="display-5">Oops! 404</h2> 
+    
+    <h4 class="lead">What you were looking for wasnt there!</h4>
+    {% if g.user %}
+    <p>Try a new search to find interesting places in your neighborhood, or go to your profile to see your favorites.</p>
+    <hr class="my-4">
+
+    <div class="lead justify-content-center">
+      <a class="btn btn-outline-primary" href="/" role="button">Search</a>
+      <a class="btn btn-outline-primary" href="/users/{{g.user.id}}" role="button">My Profile</a>
+    </div>
+    {% else %}
+    <p>Login or signup to find interesting places in your neighborhood!</p>
+    <hr class="my-4">
+
+    <div class="lead justify-content-center">
+      <a class="btn btn-outline-primary" href="/login" role="button">Login</a>
+      <a class="btn btn-outline-primary" href="/signup" role="button">Signup</a>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Change Password {% endblock %}
+
+{% block content %}
+<div class="row justify-content-md-center">
+    <div class="col-md-7 col-lg-7">
+      <h2 class="join-message ">Change your password:</h2>
+    <br>
+    <br>
+      <form class=""method="POST" id="user_form">
+        {{ form.hidden_tag() }}
+  
+        {% for field in form if field.widget.input_type != 'hidden' %}
+          {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+          <div class="form-group">
+          {{field.label}}
+          {{ field(placeholder=field.label.text, class="form-control") }}
+          </div>
+        {% endfor %}
+        <br>
+        <br>
+          <button class="btn btn-primary btn-lg btn-block">Change my password</button>
+        
+      </form>
+  
+    </div>
+  </div>
+  
+{% endblock %}

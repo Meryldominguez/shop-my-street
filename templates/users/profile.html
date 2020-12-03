@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %} {{user.username}}'s Profile {% endblock %}
+
+{% block content %}
+<div class="container m-4 justify-content-center">
+    <div class="row">
+        <div class="card border-secondary col-md-6">
+            <div class="card-header">My Profile
+                <small class="float-right">
+                    <a class= "text-info" href="/users/profile">Edit my Profile</a>
+                </small>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr class="table-light">
+                        <th scope="row">Username</th>
+                        <td>{{user.username}}</td>
+                        </tr>
+                    <tr class="table-light">
+                        <th scope="row">Email</th>
+                        <td>{{user.email}}</td>
+                        </tr>
+                    <tr class="table-light">
+                        <th scope="row">Location</th>
+                        <td>{{user.location}} ({{user.longitude}}, {{user.latitude}})</td>
+                        </tr>
+                    <tr class="table-light">
+                        <th scope="row">Bio</th>
+                        <td>{{user.bio}}</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <small class="float-left">
+                    <a type="button" class="btn-link text-danger" data-toggle="modal" data-target="#deleteModal"> Delete my profile </a></small>
+                    
+                      <!-- Modal -->
+                      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to delete your account?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                              <form action="/users/profile/delete" method="POST">
+                              <button type="submit" class="btn btn-danger"> DELETE </button>
+                            </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                <small class="float-right">
+                    <a class= "text-danger" href="/users/profile/password">Change my password</a>
+                </small>
+
+                
+                
+            </div>
+        </div>
+
+        <div class="col-md-6 ">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#discovery">Discoveries</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#favorites">Favorites</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#suggestions">Suggestions</a>
+                </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade show active" id="discovery">
+                    {% if discoveries %}
+                    <div>
+                        {% for disc in discoveries %}
+                        <div class="list-group">
+                            <a href="/business/{{disc.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{disc.discovery.name}}
+                                    {% if disc.favorite %}
+                                <i class="float-right fas fa-star text-info">
+                                </i>
+                                {% endif %}
+                                </h5>
+                            </a>
+                        </div>
+                            {% endfor %}
+                        <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries</a></div>
+                        
+                    </div>
+                    {% else %}
+                    <br>
+                        <h5>You have no discoveries yet!</h5>
+                        <p>
+                            <a class="link" href="/">Try searching your area?</a>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade" id="favorites">
+                    <div>
+                    {% for d in g.user.discoveries %}
+                        {% if d.favorite %}
+                        <div class="list-group">
+                            <a href="/business/{{d.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{d.discovery.name}}
+                                    <i class="float-right fas fa-star text-info">
+                                    </i>
+                                </h5>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries</a></div>
+                    </div>
+                    
+                </div>
+                <div class="tab-pane fade" id="suggestions">
+                    <div>
+                    {% for d in g.user.discoveries %}
+                        {% if d.favorite %}
+                        <div class="list-group">
+                            <a href="/business/{{d.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{d.discovery.name}}
+                                    <i class="float-right fas fa-star text-info">
+                                    </i>
+                                </h5>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries</a></div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
