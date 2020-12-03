@@ -340,14 +340,14 @@ def add_bus_from_resp(bus):
         
         db.session.add(business)
         db.session.commit()
-        
+
         add_db_id_to_temp_obj(bus,business.id)
         return bus
     return bus
 
 def add_db_id_to_temp_obj(bus, db_bus_id):
     bus.id = db_bus_id
-    return obj
+    return bus
 
 
 def add_cat_from_resp(bus):
