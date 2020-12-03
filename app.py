@@ -210,6 +210,7 @@ def users_show(user_id):
                     # .order_by(Discovery.timestamp.desc())
                     .limit(3)
                     .all())
+
         return render_template('users/profile.html', user=user, discoveries=discoveries)
     else:
         flash("Whoops! You cant see that information ","error")
@@ -329,14 +330,19 @@ def parse_resp(jsonReq):
         add_cat_from_resp(bus)
 
         search_list.append(bus)
+
+        business = Business(yelp_id=bus.yelp_id,name=bus.name)
+        add_db_id_to_temp_obj(bus,business.id)
+        pdb.set_trace()
     return search_list
 
 def add_bus_from_resp(bus):
     if not Business.query.filter(Business.yelp_id==bus.yelp_id).first():
-        business = Business(yelp_id=bus.yelp_id,name=bus.name)
+        
+        
         db.session.add(business)
         db.session.commit()
-        add_db_id_to_temp_obj(bus,business.id)
+        
     db.session.commit()
     return bus
 
