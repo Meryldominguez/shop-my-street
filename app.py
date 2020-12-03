@@ -34,7 +34,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "oopsiedaisy")
 
 
-os.environ['http_proxy'] = os.environ['QUOTAGUARD_URL']
+
 
 # For testing
 app.config["WTF_CSRF_ENABLED"] = False
