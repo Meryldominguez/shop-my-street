@@ -11,7 +11,7 @@ from models import db, connect_db, User, Discovery, Business, Category, Business
 import functools
 try:
     from API_KEYS import client_id, API_KEY
-except:
+except ModuleNotFoundError:
     API_KEY= process.env.API_KEY
     client_id= process.env.client_id
 import pdb

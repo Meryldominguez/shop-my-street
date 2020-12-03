@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import Boolean
 try:
     from API_KEYS import GEO_KEY
-except:
+except ModuleNotFoundError:
     GEO_KEY = process.env.DATABASE_URL
 
 bcrypt = Bcrypt()
