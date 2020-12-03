@@ -9,7 +9,11 @@ from urllib.parse import urlencode
 from forms import UserAddForm, LoginForm, UserEditForm, PasswordEditForm, SearchForm, DiscoveryForm
 from models import db, connect_db, User, Discovery, Business, Category, Business_Cat
 import functools
-from API_KEYS import client_id, API_KEY
+try:
+    from API_KEYS import client_id, API_KEY
+    except:
+        API_KEY= process.env.API_KEY
+        client_id= process.env.client_id
 import pdb
 
 CURR_USER_KEY = "curr_user"
