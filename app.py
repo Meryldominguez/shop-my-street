@@ -327,41 +327,37 @@ def parse_resp(jsonReq):
 
         add_bus_from_resp(bus)
 
+        business = Business(yelp_id=bus.yelp_id,name=bus.name)
+        add_db_id_to_temp_obj(bus,business.id)
+        
         add_cat_from_resp(bus)
 
         search_list.append(bus)
-
-        business = Business(yelp_id=bus.yelp_id,name=bus.name)
-        add_db_id_to_temp_obj(bus,business.id)
-        pdb.set_trace()
     return search_list
 
 def add_bus_from_resp(bus):
     if not Business.query.filter(Business.yelp_id==bus.yelp_id).first():
-        
-        
-        db.session.add(business)
+        db.session.add(bus)
         db.session.commit()
-        
-    db.session.commit()
+        return bus
     return bus
 
-def add_db_id_to_temp_obj(obj, id):
-    obj.id = id
+def add_db_id_to_temp_obj(bus, db_bus_id):
+    bus.id = db_bus_id
     return obj
 
 
-def add_cat_from_resp(obj):
-    for cat in obj.categories:
+def add_cat_from_resp(bus):
+    for cat in bus.categories:
         if not Category.query.filter(Category.name==cat).first():
             cat= Category(name=cat)
             db.session.add(cat)
             db.session.commit()
 
-            connector= Business_Cat(cat_id=cat.id, bus_id=obj.id)
+            connector= Business_Cat(cat_id=cat.id, bus_id=bus.id)
             db.session.add(connector)
             db.session.commit()
-    return obj
+    return bus
 
 
 @login_required
