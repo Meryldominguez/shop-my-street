@@ -327,8 +327,7 @@ def parse_resp(jsonReq):
 
         add_bus_from_resp(bus)
 
-        business = Business(yelp_id=bus.yelp_id,name=bus.name)
-        add_db_id_to_temp_obj(bus,business.id)
+        
         
         add_cat_from_resp(bus)
 
@@ -337,8 +336,12 @@ def parse_resp(jsonReq):
 
 def add_bus_from_resp(bus):
     if not Business.query.filter(Business.yelp_id==bus.yelp_id).first():
-        db.session.add(bus)
+        business = Business(yelp_id=bus.yelp_id,name=bus.name)
+        
+        db.session.add(business)
         db.session.commit()
+        
+        add_db_id_to_temp_obj(bus,business.id)
         return bus
     return bus
 
@@ -444,13 +447,12 @@ def delete_discovery(business_id):
 # Category pages
 
 
-@login_required
-@app.route('/category')
-def category_rerouting():
-    term = request.args["q"]
-    cat = Category
-    pdb.set_trace()
-    return redirect(f"/category/{cat.id}")
+# @login_required
+# @app.route('/category')
+# def category_rerouting():
+#     term = request.args["q"]
+#     cat = Category
+#     return redirect(f"/category/{cat.id}")
 
 # @login_required
 # @app.route('/category')
