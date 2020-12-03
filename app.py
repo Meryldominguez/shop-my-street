@@ -12,8 +12,9 @@ import functools
 try:
     from API_KEYS import client_id, API_KEY
 except ModuleNotFoundError:
-    API_KEY= process.env.API_KEY
-    client_id= process.env.client_id
+    
+    API_KEY= os.environ['API_KEY']
+    client_id = os.environ['client_id']
 import pdb
 
 CURR_USER_KEY = "curr_user"

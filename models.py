@@ -1,5 +1,5 @@
 """SQLAlchemy models."""
-
+import os
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +7,7 @@ from sqlalchemy.types import Boolean
 try:
     from API_KEYS import GEO_KEY
 except ModuleNotFoundError:
-    GEO_KEY = process.env.DATABASE_URL
+    GEO_KEY = os.environ['GEO_KEY']
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
