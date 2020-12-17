@@ -8,6 +8,9 @@ from sqlalchemy.exc import IntegrityError
 from urllib.parse import urlencode
 from forms import UserAddForm, LoginForm, UserEditForm, PasswordEditForm, SearchForm, DiscoveryForm
 from models import db, connect_db, User, Discovery, Business, Category, Business_Cat
+
+from business_utils import parse_resp, Bus_Profile, BusEncoder
+
 import functools
 try:
     from API_KEYS import client_id, API_KEY
@@ -15,6 +18,7 @@ except ModuleNotFoundError:
     
     API_KEY= os.environ['API_KEY']
     client_id = os.environ['client_id']
+
 import pdb
 
 CURR_USER_KEY = "curr_user"
@@ -157,7 +161,6 @@ def login():
             return redirect("/")
         elif User.query.filter_by(username=form.username.data).first():
             flash("Invalid credentials. Try again?", 'danger')
-            return 400
 
         else:
             flash("There is no account with that username. Sign Up instead!", "info")
@@ -176,24 +179,6 @@ def logout():
 ##############################################################################
 #  eventually add admin routes:
 
-
-# ADMIN ONLY
-# @app.route('/users')
-# @is_curr_user
-# @login_required
-# def list_users():
-#     """Page with listing of users. 
-
-#     Can take a 'q' param in querystring to search by that username.
-#     """
-#         search = request.args.get('q')
-
-#         if not search:
-#             users = User.query.all()
-#         else:
-#             users = User.query.filter(User.username.like(f"%{search}%")).all()
-
-#         return render_template('users/index.html', users=users)
 
 
 @login_required
@@ -284,83 +269,23 @@ def delete_user():
 
 ##############################################################################
 # business routes:
-class Bus_Profile:
-    def __init__(self,json):
-        self.id = None
-        self.yelp_id=json["id"]
-        self.name = json["name"]
-        self.phone = json["display_phone"]
-        self.rating = json["rating"]
-        self.photos = json.get("photos","https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg")
-        self.address= json["location"]["display_address"]
-        self.local= bool(json.get("is_claimed",False))
-        self.yelp_url=json["url"]
-        self.categories=[cat["title"] for cat in json.get("categories")]
-
-class BusEncoder(json.JSONEncoder):
-        def default(self, o):
-            return o.__dict__
 
 @login_required
 @app.route('/business/<int:business_id>', methods=["GET"])
 def business_show(business_id):
-    """Show a message."""
-
-    
+    """Show a business profile"""
     db_bus = Business.query.get_or_404(business_id)
 
     req = json.loads(requests.get(api_url+db_bus.yelp_id ,headers={"Authorization": f"Bearer {API_KEY}"}).text)
+    
     bus=Bus_Profile(req)
 
     disc=Discovery.query.filter(Discovery.user_id==g.user.id, Discovery.business_id==db_bus.id).first()
 
     form=DiscoveryForm(obj=disc)
-    
+
+   
     return render_template('business/profile.html',db_bus=db_bus, business=bus, user=g.user, form=form, disc=disc)
-
-    
-
-def parse_resp(jsonReq):
-    search_list=[]
-    for bus in jsonReq["businesses"]:
-        bus = Bus_Profile(bus)
-
-        add_bus_from_resp(bus)
-
-        business = Business.query.filter(Business.yelp_id==bus.yelp_id).first()
-        add_db_id_to_temp_obj(bus,business.id)
-        
-        add_cat_from_resp(bus)
-
-        search_list.append(bus)
-    return search_list
-
-def add_bus_from_resp(bus):
-    if not Business.query.filter(Business.yelp_id==bus.yelp_id).first():
-        business = Business(yelp_id=bus.yelp_id,name=bus.name)
-        
-        db.session.add(business)
-        db.session.commit()
-        return bus
-    return bus
-
-def add_db_id_to_temp_obj(bus, db_bus_id):
-    bus.id = db_bus_id
-    return bus
-
-
-def add_cat_from_resp(bus):
-    for cat in bus.categories:
-        if not Category.query.filter(Category.name==cat).first():
-            cat= Category(name=cat)
-            db.session.add(cat)
-            db.session.commit()
-
-            connector= Business_Cat(cat_id=cat.id, bus_id=bus.id)
-            db.session.add(connector)
-            db.session.commit()
-    return bus
-
 
 @login_required
 @app.route("/api/search", methods=["POST"])
@@ -370,10 +295,12 @@ def query_yelp():
     """
     form = SearchForm(obj=request.form)
     if form.validate():
+        print("hello!")
         q_string = urlencode(form.data)+"&"+urlencode({"latitude":g.user.latitude,"longitude":g.user.longitude})
         
         req = json.loads(requests.get(api_url+"search?"+q_string,headers={"Authorization": f"Bearer {API_KEY}"}).text)
 
+        print(req)
         bus_obj_list=parse_resp(req)
 
         json_list=[]
