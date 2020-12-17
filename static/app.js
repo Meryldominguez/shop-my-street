@@ -81,8 +81,9 @@ $('.disc-form').on('submit', async (evt)=>{
 
 
 // UTILS
-/** Return to the previous window **/
-function goBack() {
+
+// eslint-disable-next-line no-unused-vars
+/** Return to the previous window **/function goBack() {
   window.history.back();
 }
 
