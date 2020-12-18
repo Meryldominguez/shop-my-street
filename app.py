@@ -1,6 +1,12 @@
 import os
 
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
+try:
+    from API_KEYS import client_id, API_KEY
+except ModuleNotFoundError:
+    
+    API_KEY= os.environ['API_KEY']
+    client_id = os.environ['client_id']
 import requests
 import json
 from flask_debugtoolbar import DebugToolbarExtension
@@ -9,15 +15,10 @@ from urllib.parse import urlencode
 from forms import UserAddForm, LoginForm, UserEditForm, PasswordEditForm, SearchForm, DiscoveryForm
 from models import db, connect_db, User, Discovery, Business, Category, Business_Cat
 
-from business_utils import parse_resp, Bus_Profile, BusEncoder
+from business_utils import *
 
 import functools
-try:
-    from API_KEYS import client_id, API_KEY
-except ModuleNotFoundError:
-    
-    API_KEY= os.environ['API_KEY']
-    client_id = os.environ['client_id']
+
 
 import pdb
 
@@ -195,6 +196,10 @@ def users_show(user_id):
                     # .order_by(Discovery.timestamp.desc())
                     .limit(3)
                     .all())
+        
+        print(map(get_fav_cats,g.user.discoveries))
+
+    
 
         return render_template('users/profile.html', user=user, discoveries=discoveries)
     else:
@@ -219,7 +224,7 @@ def profile_edit():
     """Update profile for current user."""
     user=g.user
     form = UserEditForm(obj=g.user)
-    
+
     if form.validate_on_submit():
         if User.authenticate(g.user.username,form.password.data):
             user.username = form.username.data
@@ -326,30 +331,36 @@ def disc_page(user_id):
         return redirect("/")
 
 
-@login_required
-@app.route('/discovery/add/<int:business_id>', methods=["POST"])
-def add_discovery(business_id):
-    """Add discovery through Axios?"""
-    bus = Business.query.get_or_404(business_id)
+# @login_required
+# @app.route('/discovery/add/<int:business_id>', methods=["POST"])
+# def add_discovery(business_id):
+#     """Add discovery through Axios?"""
+#     bus = Business.query.get_or_404(business_id)
 
-    disc=Discovery(user_id=g.user.id,business_id=bus.id)
-    db.session.add(disc)
-    db.session.commit()
+#     disc=Discovery(user_id=g.user.id,business_id=bus.id)
+#     db.session.add(disc)
+#     db.session.commit()
 
-    return (jsonify("good job"),200)
+#     return (jsonify("good job"),200)
 
 @login_required
 @app.route('/discovery/edit/<int:business_id>', methods=["POST"])
 def edit_discovery(business_id):
-    """Add discovery through Axios?"""
+    """Add/edit discovery through Axios?"""
     disc=Discovery.query.filter(Discovery.user_id==g.user.id,Discovery.business_id==business_id).first()
 
     form=DiscoveryForm(obj=disc)
     route = form.origin.data
     if form.validate_on_submit():
+        if not disc:
+            disc=Discovery(user_id=g.user.id,business_id=business_id)
+            disc.notes=form.notes.data
+            disc.favorite= form.favorite.data
+            db.session.add(disc)
+            db.session.commit()
+            return redirect(f"/business/{business_id}")
         disc.notes=form.notes.data
         disc.favorite= form.favorite.data
-
         db.session.add(disc)
         db.session.commit()
         return redirect(f"/business/{business_id}")

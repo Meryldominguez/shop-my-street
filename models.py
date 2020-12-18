@@ -46,8 +46,7 @@ class User(db.Model):
         db.Float,
     )
     location = db.Column(
-        db.Text,
-        default="Not set"
+        db.Text
     )
 
     password = db.Column(
@@ -132,16 +131,14 @@ class Discovery(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id', ondelete="cascade"),
-        primary_key=True,
-        unique=True
+        db.ForeignKey('users.id'),
+        primary_key=True
     )
 
     business_id = db.Column(
         db.Integer,
-        db.ForeignKey('businesses.id', ondelete="cascade"),
-        primary_key=True,
-        unique=True
+        db.ForeignKey('businesses.id'),
+        primary_key=True
     )
     favorite = db.Column(
         db.Boolean,
@@ -184,7 +181,7 @@ class Business(db.Model):
     )
     discoveries =db.relationship(
         "Discovery",
-        backref="discovery")
+        backref="business")
 
 class Business_Cat(db.Model):
     """Mapping user likes to warbles."""
