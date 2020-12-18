@@ -11,12 +11,20 @@ async function processForm(evt) {
 
   return handleResponse(response.data);
 }
+/**
+ * @param {*} arr array of category objects {name,term}
+ * @return {list} string of category names, joined with a ', '
+ */
+function formatCategories(arr) {
+  let list = arr.map((cat) => cat['name']);
+  list= list.join(', ');
+  return list;
+}
 
 // eslint-disable-next-line require-jsdoc
 function handleResponse(resp) {
   $('#searchform input').empty();
   if (!resp.errors) {
-    console.log(resp);
     if (resp.length=== 0) {
       $('#search-results').append(
           `<div class="alert alert-warning" role="alert">
@@ -25,7 +33,6 @@ function handleResponse(resp) {
     } else {
       for (let bus of resp) {
         bus= JSON.parse(bus);
-        console.log(bus);
         $('#search-results').append(
             `<div class="card bg-light mb-3" 
             style="min-width: 20rem;max-width: 20rem;">
@@ -35,7 +42,7 @@ function handleResponse(resp) {
                     </h4> 
                     <smaller class= "float-right">
                     Rating: ${bus.rating}</smaller>
-                    <h6>${bus.categories.join('/')}</h6>
+                    <h6>${formatCategories(bus.categories)}</h6>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
@@ -81,8 +88,9 @@ $('.disc-form').on('submit', async (evt)=>{
 
 
 // UTILS
-/** Return to the previous window **/
-function goBack() {
+
+// eslint-disable-next-line no-unused-vars
+/** Return to the previous window **/function goBack() {
   window.history.back();
 }
 

@@ -284,8 +284,9 @@ def business_show(business_id):
 
     form=DiscoveryForm(obj=disc)
 
+    cat_string= ", ".join([cat['name'] for cat in bus.categories])
    
-    return render_template('business/profile.html',db_bus=db_bus, business=bus, user=g.user, form=form, disc=disc)
+    return render_template('business/profile.html',db_bus=db_bus, business=bus, user=g.user, form=form, disc=disc, categories=cat_string)
 
 @login_required
 @app.route("/api/search", methods=["POST"])
@@ -295,12 +296,11 @@ def query_yelp():
     """
     form = SearchForm(obj=request.form)
     if form.validate():
-        print("hello!")
+
         q_string = urlencode(form.data)+"&"+urlencode({"latitude":g.user.latitude,"longitude":g.user.longitude})
         
         req = json.loads(requests.get(api_url+"search?"+q_string,headers={"Authorization": f"Bearer {API_KEY}"}).text)
 
-        print(req)
         bus_obj_list=parse_resp(req)
 
         json_list=[]
@@ -347,7 +347,6 @@ def edit_discovery(business_id):
     form=DiscoveryForm(obj=disc)
     route = form.origin.data
     if form.validate_on_submit():
-        print(form.notes.data)
         disc.notes=form.notes.data
         disc.favorite= form.favorite.data
 
