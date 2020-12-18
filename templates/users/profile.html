@@ -85,8 +85,8 @@
                     <div>
                         {% for disc in discoveries %}
                         <div class="list-group">
-                            <a href="/business/{{disc.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-center">
-                                <h5 class="mb-1">{{disc.discovery.name}}
+                            <a href="/business/{{disc.business.id}}" class="list-group-item list-group-item-action flex-column align-items-center">
+                                <h5 class="mb-1">{{disc.business.name}}
                                     {% if disc.favorite %}
                                 <i class="float-right fas fa-star text-info">
                                 </i>
@@ -111,8 +111,8 @@
                     {% for d in g.user.discoveries %}
                         {% if d.favorite %}
                         <div class="list-group">
-                            <a href="/business/{{d.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <h5 class="mb-1">{{d.discovery.name}}
+                            <a href="/business/{{d.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{d.business.name}}
                                     <i class="float-right fas fa-star text-info">
                                     </i>
                                 </h5>
@@ -129,8 +129,8 @@
                     {% for d in g.user.discoveries %}
                         {% if d.favorite %}
                         <div class="list-group">
-                            <a href="/business/{{d.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <h5 class="mb-1">{{d.discovery.name}}
+                            <a href="/business/{{d.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{d.business.name}}
                                     <i class="float-right fas fa-star text-info">
                                     </i>
                                 </h5>
