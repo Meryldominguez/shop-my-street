@@ -132,16 +132,14 @@ class Discovery(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id', ondelete="cascade"),
-        primary_key=True,
-        unique=True
+        db.ForeignKey('users.id'),
+        primary_key=True
     )
 
     business_id = db.Column(
         db.Integer,
-        db.ForeignKey('businesses.id', ondelete="cascade"),
-        primary_key=True,
-        unique=True
+        db.ForeignKey('businesses.id'),
+        primary_key=True
     )
     favorite = db.Column(
         db.Boolean,
@@ -180,7 +178,7 @@ class Business(db.Model):
     customers = db.relationship(
         "User",
         secondary="discoveries",
-        backref="connections"
+        backref="businesses"
     )
     discoveries =db.relationship(
         "Discovery",

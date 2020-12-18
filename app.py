@@ -332,6 +332,7 @@ def disc_page(user_id):
 
 
 # @login_required
+<<<<<<< Updated upstream
 # @app.route('/discovery/add/<int:business_id>', methods=["POST"])
 # def add_discovery(business_id):
 #     """Add discovery through Axios?"""
@@ -340,6 +341,17 @@ def disc_page(user_id):
 #     disc=Discovery(user_id=g.user.id,business_id=bus.id)
 #     db.session.add(disc)
 #     db.session.commit()
+=======
+@app.route('/discovery/add/<int:business_id>', methods=["POST"])
+def add_discovery(business_id):
+    """Add discovery through Axios?"""
+    bus = Business.query.get_or_404(business_id)
+
+    disc=Discovery(user_id=g.user.id,business_id=bus.id)
+    print(disc)
+    db.session.add(disc)
+    db.session.commit()
+>>>>>>> Stashed changes
 
 #     return (jsonify("good job"),200)
 
@@ -352,6 +364,7 @@ def edit_discovery(business_id):
     form=DiscoveryForm(obj=disc)
     route = form.origin.data
     if form.validate_on_submit():
+<<<<<<< Updated upstream
         if not disc:
             disc=Discovery(user_id=g.user.id,business_id=business_id)
             disc.notes=form.notes.data
@@ -359,6 +372,8 @@ def edit_discovery(business_id):
             db.session.add(disc)
             db.session.commit()
             return redirect(f"/business/{business_id}")
+=======
+>>>>>>> Stashed changes
         disc.notes=form.notes.data
         disc.favorite= form.favorite.data
         db.session.add(disc)
