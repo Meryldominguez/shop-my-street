@@ -10,6 +10,11 @@ def time_format(string):
         hrs = str(hrs)
     return f"{hrs}:{mins}"
 
+def get_fav_cats(discovery):
+    if discovery.favorite:
+        return discovery.business.categories
+
+
 def parse_resp(jsonReq):
         search_list=[]
         for bus in jsonReq["businesses"]:
@@ -100,4 +105,6 @@ class Bus_Profile:
 class BusEncoder(json.JSONEncoder):
         def default(self, o):
             return o.__dict__
+
+
 

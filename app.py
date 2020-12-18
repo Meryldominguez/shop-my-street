@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 from forms import UserAddForm, LoginForm, UserEditForm, PasswordEditForm, SearchForm, DiscoveryForm
 from models import db, connect_db, User, Discovery, Business, Category, Business_Cat
 
-from business_utils import parse_resp, Bus_Profile, BusEncoder
+from business_utils import parse_resp, Bus_Profile, BusEncoder, get_fav_cats
 
 import functools
 try:
@@ -195,6 +195,10 @@ def users_show(user_id):
                     # .order_by(Discovery.timestamp.desc())
                     .limit(3)
                     .all())
+        
+        print(map(get_fav_cats,g.user.discoveries))
+
+    
 
         return render_template('users/profile.html', user=user, discoveries=discoveries)
     else:
@@ -219,7 +223,7 @@ def profile_edit():
     """Update profile for current user."""
     user=g.user
     form = UserEditForm(obj=g.user)
-    
+
     if form.validate_on_submit():
         if User.authenticate(g.user.username,form.password.data):
             user.username = form.username.data
@@ -341,7 +345,11 @@ def disc_page(user_id):
 @login_required
 @app.route('/discovery/edit/<int:business_id>', methods=["POST"])
 def edit_discovery(business_id):
+<<<<<<< Updated upstream
     """Add/edit discovery through Axios?"""
+=======
+    """edit discovery"""
+>>>>>>> Stashed changes
     disc=Discovery.query.filter(Discovery.user_id==g.user.id,Discovery.business_id==business_id).first()
 
     form=DiscoveryForm(obj=disc)

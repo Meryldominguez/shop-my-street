@@ -184,7 +184,7 @@ class Business(db.Model):
     )
     discoveries =db.relationship(
         "Discovery",
-        backref="discovery")
+        backref="business")
 
 class Business_Cat(db.Model):
     """Mapping user likes to warbles."""
