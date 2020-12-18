@@ -7,9 +7,9 @@
     <div class="list-group">
         {% for disc in g.user.discoveries %}
     
-        <a href="/business/{{disc.discovery.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a href="/business/{{disc.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{disc.discovery.name}}</h5>
+            <h5 class="mb-1">{{disc.business.name}}</h5>
             {% if disc.favorite %}
            <i class="fas fa-star text-info">
 
