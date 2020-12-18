@@ -345,11 +345,7 @@ def disc_page(user_id):
 @login_required
 @app.route('/discovery/edit/<int:business_id>', methods=["POST"])
 def edit_discovery(business_id):
-<<<<<<< Updated upstream
     """Add/edit discovery through Axios?"""
-=======
-    """edit discovery"""
->>>>>>> Stashed changes
     disc=Discovery.query.filter(Discovery.user_id==g.user.id,Discovery.business_id==business_id).first()
 
     form=DiscoveryForm(obj=disc)
