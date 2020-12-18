@@ -80,7 +80,6 @@ class User(db.Model):
         
         self.longitude=round(coordinates['lng'],5)
         self.latitude=round(coordinates['lat'],5)
-        print(self.longitude, self.latitude)
         return self.longitude, self.latitude
         
     @classmethod
@@ -218,6 +217,10 @@ class Category(db.Model):
     )
 
     name = db.Column(
+        db.String(140),
+        nullable=False,
+    )
+    term = db.Column(
         db.String(140),
         nullable=False,
     )

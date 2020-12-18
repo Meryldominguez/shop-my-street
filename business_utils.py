@@ -19,7 +19,7 @@ def parse_resp(jsonReq):
 
             business = Business.query.filter(Business.yelp_id==bus.yelp_id).first()
             bus.add_db_id_to_temp_obj(business.id)
-            
+            print(bus.categories)
             bus.add_cat_from_resp()
 
             search_list.append(bus)
@@ -40,7 +40,7 @@ class Bus_Profile:
         self.address= json["location"]["display_address"]
         self.local= bool(json.get("is_claimed",False))
         self.yelp_url=json["url"]
-        self.categories=[cat["title"] for cat in json.get("categories")]
+        self.categories=[{"name":cat["title"],"alias":cat["alias"]} for cat in json.get("categories")]
         self.services=json['transactions']
         if 'delivery' in self.services:
             self.delivery = True
@@ -68,8 +68,9 @@ class Bus_Profile:
 
     def add_cat_from_resp(self):
         for cat in self.categories:
-            if not Category.query.filter(Category.name==cat).first():
-                cat= Category(name=cat)
+            print(cat)
+            if not Category.query.filter(Category.name==cat['name']).first():
+                cat= Category(name=cat['name'], term=cat['alias'])
                 db.session.add(cat)
                 db.session.commit()
 
