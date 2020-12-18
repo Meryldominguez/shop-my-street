@@ -6,7 +6,6 @@
         </div>
         <div class="modal-body">
           <form id="disc-edit-form" action="/discovery/edit/{{db_bus.id}}" method="POST">
-            <!-- <input name="origin" type="hidden" value="/business/{{db_bus.id}}"> -->
             {{ form.csrf_token }}
           
           {% for field in form if field.widget.input_type != 'hidden' %}

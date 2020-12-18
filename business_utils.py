@@ -78,6 +78,7 @@ class Bus_Profile:
                 db.session.add(connector)
                 db.session.commit()
         return self
+        
     def format_hours(self,hours):
         week = {
             0:"Mon",

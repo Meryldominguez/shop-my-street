@@ -326,30 +326,34 @@ def disc_page(user_id):
         return redirect("/")
 
 
-@login_required
-@app.route('/discovery/add/<int:business_id>', methods=["POST"])
-def add_discovery(business_id):
-    """Add discovery through Axios?"""
-    bus = Business.query.get_or_404(business_id)
+# @login_required
+# @app.route('/discovery/add/<int:business_id>', methods=["POST"])
+# def add_discovery(business_id):
+#     """Add discovery through Axios?"""
+#     bus = Business.query.get_or_404(business_id)
 
-    disc=Discovery(user_id=g.user.id,business_id=bus.id)
-    db.session.add(disc)
-    db.session.commit()
+#     disc=Discovery(user_id=g.user.id,business_id=bus.id)
+#     db.session.add(disc)
+#     db.session.commit()
 
-    return (jsonify("good job"),200)
+#     return (jsonify("good job"),200)
 
 @login_required
 @app.route('/discovery/edit/<int:business_id>', methods=["POST"])
 def edit_discovery(business_id):
-    """Add discovery through Axios?"""
+    """Add/edit discovery through Axios?"""
     disc=Discovery.query.filter(Discovery.user_id==g.user.id,Discovery.business_id==business_id).first()
 
     form=DiscoveryForm(obj=disc)
     route = form.origin.data
     if form.validate_on_submit():
+        if not disc:
+            disc=Discovery(notes=form.notes.data,favorite=form.favorite.data,user_id=g.user.id,business_id=business_id)
+            db.session.add(disc)
+            db.session.commit()
+            return redirect(f"/business/{business_id}")
         disc.notes=form.notes.data
         disc.favorite= form.favorite.data
-
         db.session.add(disc)
         db.session.commit()
         return redirect(f"/business/{business_id}")
