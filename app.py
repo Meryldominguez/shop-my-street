@@ -1,6 +1,12 @@
 import os
 
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
+try:
+    from API_KEYS import client_id, API_KEY
+except ModuleNotFoundError:
+    
+    API_KEY= os.environ['API_KEY']
+    client_id = os.environ['client_id']
 import requests
 import json
 from flask_debugtoolbar import DebugToolbarExtension
@@ -9,15 +15,10 @@ from urllib.parse import urlencode
 from forms import UserAddForm, LoginForm, UserEditForm, PasswordEditForm, SearchForm, DiscoveryForm
 from models import db, connect_db, User, Discovery, Business, Category, Business_Cat
 
-from business_utils import parse_resp, Bus_Profile, BusEncoder, get_fav_cats
+from business_utils import *
 
 import functools
-try:
-    from API_KEYS import client_id, API_KEY
-except ModuleNotFoundError:
-    
-    API_KEY= os.environ['API_KEY']
-    client_id = os.environ['client_id']
+
 
 import pdb
 
@@ -352,7 +353,9 @@ def edit_discovery(business_id):
     route = form.origin.data
     if form.validate_on_submit():
         if not disc:
-            disc=Discovery(notes=form.notes.data,favorite=form.favorite.data,user_id=g.user.id,business_id=business_id)
+            disc=Discovery(user_id=g.user.id,business_id=business_id)
+            disc.notes=form.notes.data
+            disc.favorite= form.favorite.data
             db.session.add(disc)
             db.session.commit()
             return redirect(f"/business/{business_id}")
