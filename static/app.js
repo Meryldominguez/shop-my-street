@@ -41,8 +41,10 @@ function handleResponse(resp) {
                     ${bus['name']}
                     </h4> 
                     <smaller class= "float-right">
-                    Rating: ${bus.rating}</smaller>
-                    <h6>${formatCategories(bus.categories)}</h6>
+                    <img src="/static/small/${bus.rating}}@2x.png">
+                    </smaller>
+                    <h6>
+                    ${formatCategories(bus.categories)}</h6>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
