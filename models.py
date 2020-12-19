@@ -124,6 +124,9 @@ class Discovery(db.Model):
     """Connection of a follower <-> followed_user."""
 
     __tablename__ = 'discoveries'
+     __table_args__ = (
+        PrimaryKeyConstraint('user_id', 'business_id'),
+    )
 
     user_id = db.Column(
         db.Integer,
@@ -142,7 +145,7 @@ class Discovery(db.Model):
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
-        default=datetime.datetime.now(),
+        default=datetime.datetime.now()
     )
 
     notes = db.Column(
