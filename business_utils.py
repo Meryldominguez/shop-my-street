@@ -41,7 +41,7 @@ class Bus_Profile:
         self.phone = json["display_phone"]
         if not self.phone:
             self.phone = "No Phone Number Available"
-        self.rating = json["rating"]
+        self.rating = int(json["rating"]*10)
         self.pic = json.get("image_url","https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg")
         self.photos = json.get("photos")
         self.address= json["location"]["display_address"]

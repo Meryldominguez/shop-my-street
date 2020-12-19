@@ -27,9 +27,13 @@
                         <i class=" p-2 fas fa-walking" data-toggle="tooltip" data-placement="top" title="Offers pickup"></i>
                         {% endif %}
                         </div>
-                      
-                      <small class=" ml-auto p-2">
-                          {% if db_bus in g.user.businesses %}
+                        <div class="ml-auto ">
+                        <a href={{business.yelp_url}}>
+                        <i class="fab fa-3x px-2 fa-yelp"data-toggle="tooltip" data-placement="top" title="Click to see me on <img src='/static/yelp_logo.png'>"></i>
+                        </a>
+                      </div>
+                      <small class="ml">
+                          {% if db_bus in g.user.connections %}
                           <button type="button" class="btn-sm btn btn-info" data-toggle="modal" data-target="#DiscoveryModal">
                           Edit my Discovery!
                           </button>
@@ -45,7 +49,7 @@
                       </small>
                   </div>
                   <br>
-                  <h6 class="card-subtitle text-muted">Rating:{{business.rating}}</h6>
+                  <h6 class="card-subtitle text-muted"><img src="/static/small/{{business.rating}}@2x.png"></h6>
               </div>
               <div class="card-body row d-flex flex-md-wrap justify-content-around">
                   <div class="col-md-6">
