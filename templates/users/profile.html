@@ -131,6 +131,7 @@
                     {% endif %}
                 </div>
                 <div class="tab-pane fade" id="favorites">
+                    {% if favorites %}
                     <div>
                     {% for fav in favorites %}
                         <div class="list-group">
@@ -145,7 +146,13 @@
                         <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries and favorites</a>
                         </div>
                     </div>
-                    
+                    {% else %}
+                    <br>
+                        <h5>You have no favorites yet!</h5>
+                        <p>
+                            <a class="link" href="/">Try searching your area?</a>
+                        </p>
+                    {% endif %}
                 </div>                    
             </div>
         </div>
