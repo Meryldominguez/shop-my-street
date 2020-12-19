@@ -9,7 +9,7 @@ except ModuleNotFoundError:
     client_id = os.environ['client_id']
 import requests
 import json
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func
 from urllib.parse import urlencode
@@ -35,20 +35,20 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgres:///shopmystreet'))
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = False
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_ECHO'] = False
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "oopsiedaisy")
 
 
 
 
 # For testing
-app.config["WTF_CSRF_ENABLED"] = False
+app.config["WTF_CSRF_ENABLED"] = True
 
 
-toolbar = DebugToolbarExtension(app)
-
+# toolbar = DebugToolbarExtension(app)
+heroku = Heroku(app)
 connect_db(app)
 
 # ################################ #
@@ -346,14 +346,15 @@ def disc_page(user_id):
 
 
 # @login_required
-# @app.route('/discovery/add/<int:business_id>', methods=["POST"])
-# def add_discovery(business_id):
-#     """Add discovery through Axios?"""
-#     bus = Business.query.get_or_404(business_id)
+@app.route('/discovery/add/<int:business_id>', methods=["POST"])
+def add_discovery(business_id):
+    """Add discovery through Axios?"""
+    bus = Business.query.get_or_404(business_id)
 
-#     disc=Discovery(user_id=g.user.id,business_id=bus.id)
-#     db.session.add(disc)
-#     db.session.commit()
+    disc=Discovery(user_id=g.user.id,business_id=bus.id)
+    print(disc)
+    db.session.add(disc)
+    db.session.commit()
 
 #     return (jsonify("good job"),200)
 
