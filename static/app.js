@@ -41,7 +41,7 @@ function handleResponse(resp) {
                     ${bus['name']}
                     </h4> 
                     <smaller class= "float-right">
-                    <img src="/static/small/${bus.rating}@2x.png">
+                    <img src="/static/small/${bus.rating}.png">
                     </smaller>
                     <h6>
                     ${formatCategories(bus.categories)}</h6>
