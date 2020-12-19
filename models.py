@@ -124,7 +124,7 @@ class Discovery(db.Model):
     """Connection of a follower <-> followed_user."""
 
     __tablename__ = 'discoveries'
-     __table_args__ = (
+    __table_args__ = (
         PrimaryKeyConstraint('user_id', 'business_id'),
     )
 
