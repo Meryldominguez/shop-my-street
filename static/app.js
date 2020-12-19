@@ -89,7 +89,7 @@ $('.disc-form').on('submit', async (evt)=>{
 
 // UTILS
 
-// eslint-disable-next-line no-unused-vars
+
 /**
  * Return to the previous window
  * @param {int} num number of windows to go back
@@ -99,5 +99,8 @@ function goBack(num) {
 }
 
 $(function() {
-  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="tooltip"]').tooltip({
+    animated: 'fade',
+    html: true,
+  });
 });

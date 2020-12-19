@@ -1,6 +1,6 @@
 """SQLAlchemy models."""
 import os
-from datetime import datetime
+import datetime
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import Boolean
@@ -54,10 +54,7 @@ class User(db.Model):
         db.Text,
         nullable=False,
     )
-    discoveries= db.relationship(
-        "Discovery", 
-        cascade = "all,delete"
-        )
+    
 
 
 
@@ -146,15 +143,20 @@ class Discovery(db.Model):
         default=False
     )
     
-    # timestamp = db.Column(
-    #     db.DateTime,
-    #     nullable=False,
-    #     default=datetime.date(),
-    # )
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.datetime.now(),
+    )
 
     notes = db.Column(
         db.Text
     )
+    user= db.relationship(
+        "User", 
+        cascade = "all,delete",
+        backref="discoveries"
+        )
 
 
 class Business(db.Model):

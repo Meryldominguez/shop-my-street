@@ -11,6 +11,8 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
         <a class="navbar-brand" href="/">Shop My Street</a>
+        <small> Powered by <a  href="https://www.yelp.com"><img class="mb-2" src='/static/yelp_logo.png'></span>
+        </div></a></small>
         
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -57,8 +59,13 @@
         {% endif %}
     {% endwith %}
     </div>
-
+    
    {% block content %}{% endblock %}
+   <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+          <span class="text-muted text-center">Currently all data courtesy of <a  href="https://www.yelp.com"><img class="mb-2" src='/static/yelp_logo.png'></span>
+        </div></a>
+      </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.js" integrity="sha512-bYkaBWaFtfPIMYt9+CX/4DWgfrjcHinjerNYxQmQx1VM76eUsPPKZa5zWV8KksVkBF/DaHSADCwil2J5Uq2ctA==" crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
