@@ -216,6 +216,7 @@ def users_show(user_id):
                     .limit(3)
                     .all()
                     )
+        suggestions=[]
         if favorites:
             q_string = ",".join([cat.term for cat in favorite_cats])+"&"+"radius=1500"+"&"+urlencode({"latitude":g.user.latitude,"longitude":g.user.longitude})
         
@@ -223,9 +224,10 @@ def users_show(user_id):
             
             suggestions=remove_discoveries(g.user,parse_resp(req))
             shuffle(suggestions)
+            suggestions=suggestions[0:5:]
             
 
-        return render_template('users/profile.html', user=user, discoveries=discoveries, favorites=favorites,suggestions=suggestions[0:5:])
+        return render_template('users/profile.html', user=user, discoveries=discoveries, favorites=favorites,suggestions=suggestions)
     else:
         flash("Whoops! You cant see that information ","error")
         return redirect("/")
