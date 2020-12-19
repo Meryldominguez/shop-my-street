@@ -5,11 +5,12 @@
           <h5 class="modal-title" id="DiscoveryModalLabel">My Discovery</h5>
         </div>
         <div class="modal-body">
-          {% if db_bus in g.user.businesses %}
+          <!-- {% if db_bus in g.user.businesses %} -->
           <form id="disc-edit-form" action="/discovery/edit/{{db_bus.id}}" method="POST">
-          {% else %}
-          <form id="disc-edit-form" action="/discovery/add/{{db_bus.id}}" method="POST">
-          {% endif %}
+          <!-- {% else %}
+          OOPS
+          <form id="disc-edit-form" action="/discovery/add/{{db_bus.id}}" method="POST"> -->
+          <!-- {% endif %} -->
             {{ form.csrf_token }}
           
           {% for field in form if field.widget.input_type != 'hidden' %}
