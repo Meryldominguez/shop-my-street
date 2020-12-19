@@ -149,7 +149,8 @@ class Discovery(db.Model):
     )
 
     notes = db.Column(
-        db.Text
+        db.Text,
+        default="No notes yet"
     )
     user= db.relationship(
         "User", 
