@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container m-4 justify-content-center">
-    <div class="row">
+    <div class="row d-flex flex-wrap">
         <div class="card border-secondary col-md-6">
             <div class="card-header">My Profile
                 <small class="float-right">
@@ -63,7 +63,7 @@
                 </small> 
             </div>
         </div>
-        <div class="col-md-6 ">
+        <div class="col-md-6 tabs">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                   <a class="nav-link active" data-toggle="tab" href="#suggestions">Suggestions</a>
@@ -77,19 +77,23 @@
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade show active" id="suggestions">
-                    <div>
                     {% if suggestions %}
+                    <div class="list-group">
                     {% for sugg in suggestions%}
-                        
-                        <div class="list-group">
-                            <a href="/business/{{sugg.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <h5 class="mb-1">{{sugg.name}}
-                                    <small class="float-right">Rating: {{sugg.rating}}</small>
-                                </h5>
-                            </a>
-                        </div>
-                        
+                            <a href="/business/{{sugg.id}}" class="list-group-item list-group-item-action d-flex">
+                                <div class="flex-row align-content-center">
+                                    <h5 class="">
+                                    {{sugg.name}}
+                                    </h5>
+                                    <div class="ml-auto">
+                                        <i class="mr-3 fab fa-2x fa-yelp"data-toggle="tooltip" data-placement="top" title="Info from <img src='/static/yelp_logo.png'>">
+                                        </i>
+                                        <img class="align-self-auto"src="/static/small/{{sugg.rating}}.png">
+                                      </div>
+                                </div>
+                            </a>        
                     {% endfor %}
+                    </div>
                     {% else %}
                     <br>
                         <h5>You have no suggestions yet!</h5>
@@ -98,7 +102,7 @@
                         </p>
 
                     {% endif%}
-                    </div>
+                    
                 </div>
                 <div class="tab-pane fade" id="discoveries">
                     {% if discoveries %}
