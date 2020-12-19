@@ -294,6 +294,7 @@ def delete_user():
 def business_show(business_id):
     """Show a business profile"""
     db_bus = Business.query.get_or_404(business_id)
+    
 
     req = json.loads(requests.get(api_url+db_bus.yelp_id ,headers={"Authorization": f"Bearer {API_KEY}"}).text)
     
