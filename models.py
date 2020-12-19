@@ -125,7 +125,7 @@ class Discovery(db.Model):
 
     __tablename__ = 'discoveries'
     __table_args__ = (
-        PrimaryKeyConstraint('user_id', 'business_id'),
+        db.PrimaryKeyConstraint('user_id', 'business_id'),
     )
 
     user_id = db.Column(
