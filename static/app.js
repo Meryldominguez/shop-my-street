@@ -48,7 +48,9 @@ function handleResponse(resp) {
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                    ${bus.address[0]}<br>${bus.address[1]}
+                    ${bus.address[0] ? bus.address[0]: null}
+                    <br>
+                    ${bus.address[1]? bus.address[1]: null}
                     </h5>
                 <h6>${bus.phone}</h6>
 
