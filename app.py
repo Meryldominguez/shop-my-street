@@ -48,7 +48,7 @@ app.config["WTF_CSRF_ENABLED"] = True
 
 
 # toolbar = DebugToolbarExtension(app)
-heroku = Heroku(app)
+
 connect_db(app)
 
 # ################################ #
