@@ -1,5 +1,6 @@
 from models import Category, Business, db, Business_Cat
 import json
+import pdb
 
 def time_format(string):
     hrs = int(string[:2:])
@@ -10,10 +11,13 @@ def time_format(string):
         hrs = str(hrs)
     return f"{hrs}:{mins}"
 
-def get_fav_cats(discovery):
-    if discovery.favorite:
-        return discovery.business.categories
-
+def remove_discoveries(user,bus_list):
+    results= []
+    ids= [bus.id for bus in user.businesses]
+    for bus in bus_list:
+        if bus.id not in ids:
+            results.append(bus)
+    return results
 
 def parse_resp(jsonReq):
         search_list=[]
@@ -24,9 +28,7 @@ def parse_resp(jsonReq):
 
             business = Business.query.filter(Business.yelp_id==bus.yelp_id).first()
             bus.add_db_id_to_temp_obj(business.id)
-            print(bus.categories)
             bus.add_cat_from_resp()
-
             search_list.append(bus)
         return search_list
 
@@ -60,7 +62,6 @@ class Bus_Profile:
     def add_bus_from_resp(self):
         if not Business.query.filter(Business.yelp_id==self.yelp_id).first():
             business = Business(yelp_id=self.yelp_id,name=self.name)
-            
             db.session.add(business)
             db.session.commit()
             return self
@@ -73,16 +74,22 @@ class Bus_Profile:
 
     def add_cat_from_resp(self):
         for cat in self.categories:
-            print(cat)
-            if not Category.query.filter(Category.name==cat['name']).first():
-                cat= Category(name=cat['name'], term=cat['alias'])
-                db.session.add(cat)
+            if not Category.query.filter(Category.term==cat['alias']).first():
+                category= Category(name=cat['name'], term=cat['alias'])
+                db.session.add(category)
                 db.session.commit()
-
-                connector= Business_Cat(cat_id=cat.id, bus_id=self.id)
-                db.session.add(connector)
-                db.session.commit()
+            category = Category.query.filter(Category.term==cat['alias']).first()
+            self.connect_bus_cat(category)
         return self
+
+    def connect_bus_cat(self, cat):
+        if not Business_Cat.query.filter(Business_Cat.cat_id==cat.id, Business_Cat.bus_id==self.id).first():
+            connector= Business_Cat(cat_id=cat.id,bus_id=self.id)
+            db.session.add(connector)
+            db.session.commit()
+        pass
+
+
         
     def format_hours(self,hours):
         week = {

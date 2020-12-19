@@ -4,6 +4,7 @@ from datetime import datetime
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import Boolean
+
 try:
     from API_KEYS import GEO_KEY
 except ModuleNotFoundError:
@@ -174,17 +175,18 @@ class Business(db.Model):
         db.Text
     )
 
+
     customers = db.relationship(
         "User",
         secondary="discoveries",
-        backref="connections"
+        backref="businesses"
     )
     discoveries =db.relationship(
         "Discovery",
         backref="business")
 
 class Business_Cat(db.Model):
-    """Mapping user likes to warbles."""
+    """Mapping Businesses to Categories"""
 
     __tablename__ = 'business_cat' 
 
@@ -199,11 +201,11 @@ class Business_Cat(db.Model):
         db.ForeignKey('categories.id', ondelete="cascade"),
         primary_key=True,
     )
-
+    
     
 
 class Category(db.Model):
-    """An individual message ("warble")."""
+    """A yelp defined category"""
 
     __tablename__ = 'categories'
 

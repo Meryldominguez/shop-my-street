@@ -90,8 +90,12 @@ $('.disc-form').on('submit', async (evt)=>{
 // UTILS
 
 // eslint-disable-next-line no-unused-vars
-/** Return to the previous window **/function goBack() {
-  window.history.back();
+/**
+ * Return to the previous window
+ * @param {int} num number of windows to go back
+**/
+function goBack(num) {
+  window.history.go(-num);
 }
 
 $(function() {

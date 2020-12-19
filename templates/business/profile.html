@@ -4,7 +4,7 @@
 {% block content %}
 {% include 'business/discovery_modal.html' %}
 <div class="container-fluid">
-  <button class="btn btn-outline-secondary" onclick="goBack()">Back</button>
+  <button class="btn btn-outline-secondary" onclick="goBack(2)">Back</button>
   <div class="m-3">
           <div class="card border-secondary col-md-12">
               <div class="card-header">
@@ -14,7 +14,7 @@
                       </h3>
                         {% if business.local == True %}
                         <div>
-                        <i class="p-2 ml-4 fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Locally Owned"></i>
+                        <i class="p-2 ml-4 fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Claimed on Yelp"></i>
                         {% endif %}
                         {% if business.is_open %}
                         <i class="p-2 fas fa-door-open" data-toggle="tooltip" data-placement="top" title="Open Now"></i>
@@ -29,7 +29,7 @@
                         </div>
                       
                       <small class=" ml-auto p-2">
-                          {% if db_bus in g.user.connections %}
+                          {% if db_bus in g.user.businesses %}
                           <button type="button" class="btn-sm btn btn-info" data-toggle="modal" data-target="#DiscoveryModal">
                           Edit my Discovery!
                           </button>
@@ -90,7 +90,7 @@
                     </table>
                   </div>
                   <div class="col">
-                  {% if db_bus in g.user.connections %}
+                  {% if db_bus in g.user.businesses %}
                         <div>
                             <h5>Notes : </h5>
                             <p>{{disc.notes}}</p>

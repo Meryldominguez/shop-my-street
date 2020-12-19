@@ -11,9 +11,11 @@ import requests
 import json
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import func
 from urllib.parse import urlencode
 from forms import UserAddForm, LoginForm, UserEditForm, PasswordEditForm, SearchForm, DiscoveryForm
 from models import db, connect_db, User, Discovery, Business, Category, Business_Cat
+from random import shuffle
 
 from business_utils import *
 
@@ -193,30 +195,40 @@ def users_show(user_id):
         discoveries = (Discovery
                     .query
                     .filter(Discovery.user_id == user_id)
-                    # .order_by(Discovery.timestamp.desc())
+                    .order_by(func.random())
+                    .limit(5)
+                    .all()
+                    )
+        favorites = (Discovery
+                    .query
+                    .filter(Discovery.user_id == user_id, Discovery.favorite==True)
+                    .order_by(func.random())
+                    .limit(5)
+                    .all()
+                    )
+        favorite_cats = (Category.query
+                    .join(Business_Cat)
+                    .join(Business)
+                    .join(Discovery)
+                    .filter(Discovery.user_id == user_id, Discovery.favorite==True)
+                    .order_by(func.count(Category.id).desc())
+                    .group_by(Category.id)
                     .limit(3)
-                    .all())
+                    .all()
+                    )
+        if favorites:
+            q_string = ",".join([cat.term for cat in favorite_cats])+"&"+"radius=1500"+"&"+urlencode({"latitude":g.user.latitude,"longitude":g.user.longitude})
         
-        print(map(get_fav_cats,g.user.discoveries))
+            req = json.loads(requests.get(api_url+"search?"+q_string,headers={"Authorization": f"Bearer {API_KEY}"}).text)
+            
+            suggestions=remove_discoveries(g.user,parse_resp(req))
+            shuffle(suggestions)
+            
 
-    
-
-        return render_template('users/profile.html', user=user, discoveries=discoveries)
+        return render_template('users/profile.html', user=user, discoveries=discoveries, favorites=favorites,suggestions=suggestions[0:5:])
     else:
         flash("Whoops! You cant see that information ","error")
         return redirect("/")
-
-# @login_required
-# @app.route('/users/<int:user_id>/discoveries')
-# def show_discoveries(user_id):
-#     """Show list of businesses this person has discovered."""
-#     if is_curr_user(user_id):
-#         user = User.query.get_or_404(user_id)
-#         return render_template('users/following.html', user=user)
-#     else:
-#         flash("Whoops! You cant see that information ","error")
-#         return redirect("/")
-
 
 @login_required
 @app.route('/users/profile', methods=["GET", "POST"])
@@ -374,7 +386,7 @@ def delete_discovery(business_id):
     route = request.form["origin"]
     
     bus = Business.query.get_or_404(business_id)
-    g.user.connections.remove(bus)
+    g.user.businesses.remove(bus)
     db.session.commit()
     return redirect(route)
 

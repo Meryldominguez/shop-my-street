@@ -60,27 +60,47 @@
                       </div>
                 <small class="float-right">
                     <a class= "text-danger" href="/users/profile/password">Change my password</a>
-                </small>
-
-                
-                
+                </small> 
             </div>
         </div>
-
         <div class="col-md-6 ">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#discovery">Discoveries</a>
+                  <a class="nav-link active" data-toggle="tab" href="#suggestions">Suggestions</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#discoveries">Discoveries</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" data-toggle="tab" href="#favorites">Favorites</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#suggestions">Suggestions</a>
-                </li>
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade show active" id="discovery">
+                <div class="tab-pane fade show active" id="suggestions">
+                    <div>
+                    {% if suggestions %}
+                    {% for sugg in suggestions%}
+                        
+                        <div class="list-group">
+                            <a href="/business/{{sugg.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{sugg.name}}
+                                    <small class="float-right">Rating: {{sugg.rating}}</small>
+                                </h5>
+                            </a>
+                        </div>
+                        
+                    {% endfor %}
+                    {% else %}
+                    <br>
+                        <h5>You have no suggestions yet!</h5>
+                        <p>
+                            <a class="link" href="/">Try picking some favorites in your area?</a>
+                        </p>
+
+                    {% endif%}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="discoveries">
                     {% if discoveries %}
                     <div>
                         {% for disc in discoveries %}
@@ -108,40 +128,21 @@
                 </div>
                 <div class="tab-pane fade" id="favorites">
                     <div>
-                    {% for d in g.user.discoveries %}
-                        {% if d.favorite %}
+                    {% for fav in favorites %}
                         <div class="list-group">
-                            <a href="/business/{{d.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <h5 class="mb-1">{{d.business.name}}
+                            <a href="/business/{{fav.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <h5 class="mb-1">{{fav.business.name}}
                                     <i class="float-right fas fa-star text-info">
                                     </i>
                                 </h5>
                             </a>
                         </div>
-                        {% endif %}
                         {% endfor %}
-                        <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries</a></div>
-                    </div>
-                    
-                </div>
-                <div class="tab-pane fade" id="suggestions">
-                    <div>
-                    {% for d in g.user.discoveries %}
-                        {% if d.favorite %}
-                        <div class="list-group">
-                            <a href="/business/{{d.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <h5 class="mb-1">{{d.business.name}}
-                                    <i class="float-right fas fa-star text-info">
-                                    </i>
-                                </h5>
-                            </a>
+                        <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries and favorites</a>
                         </div>
-                        {% endif %}
-                        {% endfor %}
-                        <div class="list-group"><a class="list-group-item list-group-item-action flex-column align-content-center" href="/discovery/{{user.id}}">See all of your discoveries</a></div>
                     </div>
                     
-                </div>
+                </div>                    
             </div>
         </div>
     </div>
