@@ -17,9 +17,14 @@ Discoveries have a timestamp (Timezones are in progress  for v2) can have person
 	* python	 
 	* Jinja for templates and HTML
 	* Javascript
+	* AJAX
 * SQLAlchemy
 * Bootstrap
 * Heroku for deployment
+* Variety of Python Libraries including
+	* urllib3
+	* bcrypt
+	* datetime
 * APIs
 	* [Yelp API](https://www.yelp.com/developers/documentation/v3/)
 		* Some complication since obviously scraping their data is not allowed. I used a temporary class I named Bus_Profile to prevent too many API calls, but not save data 
