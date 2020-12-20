@@ -1,31 +1,52 @@
 {% extends 'base.html' %}
-{% block title %} {{g.user}}'s Discoveries {% endblock %}
-
+{% block title %} {{g.user.username}}'s Discoveries {% endblock %}
 {% block content %}
+
 <div class="container">
     <h2>My Discoveries</h2>
-    <div class="list-group">
+    <div class="list-group ">
         {% for disc in g.user.discoveries %}
-    
-        <a href="/business/{{disc.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{disc.business.name}}</h5>
-            {% if disc.favorite %}
-           <i class="fas fa-star text-info">
-
-           </i>
-            {% endif %}
-
+        <div class="list-group-item list-group-item-action container">
+          <div class="row">
+          <div id="title" class="col-md col-4">
+  
+          <div class="col-12" >
+            <div class="row">
+            <h5 class="col">{{disc.business.name}}</h5>
+            <div class="col">
+              {% if disc.favorite %}
+             <i class="fas fa-3x fa-star text-secondary" data-toggle="tooltip" data-placement="top" title="This is a Favorite of yours">
+             </i>
+             {% endif %}
+            </div>
+            </div>
+          <small>{{disc.timestamp}}</small>
           </div>
-          <p class="mb-1">
-              {% if disc.notes %}
-              {{disc.notes}}
-              {% else %}
-              No Notes on this Discovery
-              {% endif %}
+          </div>
+          <div id="notes" class="col-md col-6">
+            <p class="text-wrap">
+                {% if disc.notes %}
+                {{disc.notes}}
+                {% else %}
+                No Notes on this Discovery
+                {% endif %}
             </p>
-          <!-- <small>Timestamp?</small> -->
-        </a>
+          </div>
+          <div id="buttons" class="col-md col-12">
+          <form class="row-sm col-12" action="/business/{{disc.business.id}}">
+            <button class="col btn btn-sm btn-outline-secondary ">More Info</button>
+            </form>
+            <form class="row-sm col-12" method="GET" action="/discovery/{{g.user.id}}/edit/{{disc.business.id}}">
+            <button type="submit" class="col-12 btn btn-sm btn-outline-info" >
+            Edit my Discovery!
+            </button></form>
+            <form class="row-sm col-12" method="POST" action="/discovery/delete/{{disc.business.id}}">
+              <input name="origin" type="hidden" value="/discovery/{{g.user.id}}">
+              <button class="col-12 btn btn-sm btn-outline-primary">Delete Discovery</button>
+            </form>
+          </div>
+        </div>
+        </div>
         {% endfor %}
       </div>
     

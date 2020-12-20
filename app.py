@@ -306,7 +306,7 @@ def business_show(business_id):
 
     cat_string= ", ".join([cat['name'] for cat in bus.categories])
    
-    return render_template('business/profile.html',db_bus=db_bus, business=bus, user=g.user, form=form, disc=disc, categories=cat_string)
+    return render_template('business/profile.html',business=db_bus, bus=bus, user=g.user, form=form, disc=disc, categories=cat_string)
 
 @login_required
 @app.route("/api/search", methods=["POST"])
@@ -340,9 +340,22 @@ def query_yelp():
 
 @login_required
 @app.route('/discovery/<int:user_id>/', methods=["GET","POST"])
-def disc_page(user_id):
+def disc_list_page(user_id):
     if is_curr_user(user_id):
         return render_template("users/disc_list.html")
+    else:
+        flash("Whoops! You cant see that information ","error")
+        return redirect("/")
+
+@login_required
+@app.route('/discovery/<int:user_id>/edit/<int:bus_id>', methods=["GET","POST"])
+def disc_page(user_id,bus_id):
+    if is_curr_user(user_id):
+        disc= Discovery.query.filter(Discovery.business_id==bus_id, Discovery.user_id==user_id).first()
+        form=DiscoveryForm(obj=disc)
+        
+        return render_template("business/discovery.html", disc=disc,form=form, user=g.user)
+
     else:
         flash("Whoops! You cant see that information ","error")
         return redirect("/")
@@ -372,6 +385,7 @@ def edit_discovery(business_id):
     if form.validate_on_submit():
         disc.notes=form.notes.data
         disc.favorite= form.favorite.data
+        disc.timestamp=disc.timestamp
         db.session.add(disc)
         db.session.commit()
         return redirect(f"/business/{business_id}")
