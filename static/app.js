@@ -59,16 +59,22 @@ function handleResponse(resp) {
                 style="width: 200px; height: 200px" 
                 alt="an image of ${bus.name}" class="img-thumbnail img">
               </p>
-              <form action="/business/${bus.id}">
-              <button class="btn btn-outline-secondary">More Info</button>
-              </form>
-              <form>
-              <button id="${bus.id}"
-              type="button"
-              class="quick-add-disc btn btn-outline-secondary">
-              Quick add to Discoveries
-              </button>
-              </form>
+              <div class="row">
+                <form class="col p-0" action="/business/${bus.id}">
+                <button class="col-12 
+                btn btn-outline-secondary">
+                More <br> Info
+                </button>
+                </form>
+                <form class="col p-0">
+                <button id="${bus.id}"
+                type="button"
+                class="col-12 
+                quick-add-disc btn btn-outline-info">
+                Quick Discover
+                </button>
+                </form>
+              </div>
             </div>
           </div>`);
       }
@@ -77,15 +83,15 @@ function handleResponse(resp) {
         console.log($(`#${evt.target.id}`).hasClass('discovery'));
         if (!$(`#${evt.target.id}`).hasClass('discovery')) {
           resp = await axios.post(`/discovery/add/${evt.target.id}`);
-          $(`#${evt.target.id}`).text('Quick delete my Discovery');
+          $(`#${evt.target.id}`).text('Quick delete Discovery');
         } else {
           resp = await axios.post(`/discovery/delete/${evt.target.id}`);
-          $(`#${evt.target.id}`).text('Quick add to Discoveries');
+          $(`#${evt.target.id}`).text('Quick Discover');
         }
 
         $(`#${evt.target.id}`)
             .toggleClass('discovery')
-            .toggleClass('btn-outline-secondary')
+            .toggleClass('btn-outline-info')
             .toggleClass('btn-outline-primary');
         console.log($(`#${evt.target.id}`).attr('class'));
       });
