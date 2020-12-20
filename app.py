@@ -321,9 +321,11 @@ def query_yelp():
         
         req = json.loads(requests.get(api_url+"search?"+q_string,headers={"Authorization": f"Bearer {API_KEY}"}).text)
 
-        bus_obj_list=parse_resp(req)
+        bus_obj_list=remove_discoveries(g.user,parse_resp(req))
+        shuffle(bus_obj_list)
 
         json_list=[]
+
         for bus in bus_obj_list:
             json_list.append(BusEncoder().encode(bus))
         
@@ -357,7 +359,7 @@ def add_discovery(business_id):
     db.session.add(disc)
     db.session.commit()
 
-#     return (jsonify("good job"),200)
+    return (jsonify("good job"),200)
 
 @login_required
 @app.route('/discovery/edit/<int:business_id>', methods=["POST"])
@@ -380,12 +382,18 @@ def edit_discovery(business_id):
 @app.route('/discovery/delete/<int:business_id>', methods=["POST"])
 def delete_discovery(business_id):
     """Add discovery through Axios?"""
-    route = request.form["origin"]
-    
+    if request.form.get("origin"):
+        route = request.form["origin"]
+        bus = Business.query.get_or_404(business_id)
+        g.user.businesses.remove(bus)
+        db.session.commit()
+        return redirect(route)
+
     bus = Business.query.get_or_404(business_id)
     g.user.businesses.remove(bus)
     db.session.commit()
-    return redirect(route)
+    return (jsonify("deleted"),200)
+
 
 
 ##############################################################################
@@ -418,6 +426,7 @@ def homepage():
     if g.user:
         if g.user.latitude and g.user.longitude:
             form = SearchForm()
+            
             return render_template('home.html', form=form)
         else:
             flash("Please fill in your location information to search your area.","info")
