@@ -60,11 +60,35 @@ function handleResponse(resp) {
                 alt="an image of ${bus.name}" class="img-thumbnail img">
               </p>
               <form action="/business/${bus.id}">
-              <button class="btn btn-outline-secondary">More Info</>
+              <button class="btn btn-outline-secondary">More Info</button>
+              </form>
+              <form>
+              <button id="${bus.id}"
+              type="button"
+              class="quick-add-disc btn btn-outline-secondary">
+              Quick add to Discoveries
+              </button>
               </form>
             </div>
           </div>`);
       }
+      $('.quick-add-disc').on('click', async (evt)=>{
+        evt.preventDefault();
+        console.log($(`#${evt.target.id}`).hasClass('discovery'));
+        if (!$(`#${evt.target.id}`).hasClass('discovery')) {
+          resp = await axios.post(`/discovery/add/${evt.target.id}`);
+          $(`#${evt.target.id}`).text('Quick delete my Discovery');
+        } else {
+          resp = await axios.post(`/discovery/delete/${evt.target.id}`);
+          $(`#${evt.target.id}`).text('Quick add to Discoveries');
+        }
+
+        $(`#${evt.target.id}`)
+            .toggleClass('discovery')
+            .toggleClass('btn-outline-secondary')
+            .toggleClass('btn-outline-primary');
+        console.log($(`#${evt.target.id}`).attr('class'));
+      });
     }
   } else {
     for (const cat in resp.errors) {
@@ -92,14 +116,12 @@ $('.disc-form').on('submit', async (evt)=>{
 
 
 // UTILS
-
-
 /**
  * Return to the previous window
  * @param {int} num number of windows to go back
 **/
 function goBack(num) {
-  window.history.go(-num);
+  window.location.href=document.referrer;
 }
 
 $(function() {

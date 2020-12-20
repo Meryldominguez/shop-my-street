@@ -4,7 +4,9 @@
 {% block content %}
 {% include 'business/discovery_modal.html' %}
 <div class="container-fluid">
-  <button class="btn btn-outline-secondary" onclick="goBack(2)">Back</button>
+
+  <button class="btn btn-outline-secondary" onclick="goBack()">Back</button>
+ 
   <div class="m-3">
           <div class="card border-secondary col-md-12">
               <div class="card-header">
@@ -31,9 +33,13 @@
                         <a href={{business.yelp_url}}>
                         <i class="fab fa-3x px-2 fa-yelp"data-toggle="tooltip" data-placement="top" title="Click to see me on <img src='/static/yelp_logo.png'>"></i>
                         </a>
+                        {% if disc.favorite %}
+                        <i class="fas fa-3x px-2 fa-star"data-toggle="tooltip" data-placement="top" title="This Business is a Favorite of yours!"></i>
+                        {% endif %}
                       </div>
                       <small class="ml">
-                          {% if business in user.businesses %}
+
+                          {% if disc %}
                           <button type="button" class="btn-sm btn btn-info" data-toggle="modal" data-target="#DiscoveryModal">
                           Edit my Discovery!
                           </button>
