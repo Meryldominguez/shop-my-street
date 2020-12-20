@@ -10,34 +10,34 @@
   <div class="m-3">
           <div class="card border-secondary col-md-12">
               <div class="card-header">
-                  <div class="row d-flex">
-                      <h3>
+                  <div class="row ">
+                      <h3 class="col">
                         {{business.name}}
                       </h3>
-                        {% if business.local == True %}
-                        <div>
-                        <i class="p-2 ml-4 fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Claimed on Yelp"></i>
+                      <div class='col'>
+                        {% if bus.local == True %}
+                        <i class="p-2 fas fa-check-circle" data-toggle="tooltip" data-placement="top" title="Claimed on Yelp"></i>
                         {% endif %}
                         {% if business.is_open %}
                         <i class="p-2 fas fa-door-open" data-toggle="tooltip" data-placement="top" title="Open Now"></i>
                         {% endif %}
-                        {% if business.delivery %}
+                        {% if bus.delivery %}
                         <i class="p-2 fas fa-couch" data-toggle="tooltip" data-placement="top" title="Offers Delivery">
                         </i>
                         {% endif %}
-                        {% if business.pickup %}
+                        {% if bus.pickup %}
                         <i class=" p-2 fas fa-walking" data-toggle="tooltip" data-placement="top" title="Offers pickup"></i>
                         {% endif %}
                         </div>
-                        <div class="ml-auto ">
-                        <a href={{business.yelp_url}}>
-                        <i class="fab fa-3x px-2 fa-yelp"data-toggle="tooltip" data-placement="top" title="Click to see me on <img src='/static/yelp_logo.png'>"></i>
-                        </a>
+                      <div class="ml-auto my-auto">
                         {% if disc.favorite %}
                         <i class="fas fa-3x px-2 fa-star"data-toggle="tooltip" data-placement="top" title="This Business is a Favorite of yours!"></i>
                         {% endif %}
+                        <a href={{bus.yelp_url}}>
+                        <i class="fab fa-3x px-2 fa-yelp"data-toggle="tooltip" data-placement="top" title="Click to see me on <img src='/static/yelp_logo.png'>"></i>
+                        </a>
                       </div>
-                      <small class="ml">
+                      <small class=" my-auto">
 
                           {% if disc %}
                           <button type="button" class="btn-sm btn btn-info" data-toggle="modal" data-target="#DiscoveryModal">
@@ -53,9 +53,10 @@
                           </form>
                           {% endif %}
                       </small>
+                      <br>
+                  <h6 class="card-subtitle text-muted col-12 my-auto"><img src="/static/small/{{bus.rating}}@2x.png"></h6>
                   </div>
-                  <br>
-                  <h6 class="card-subtitle text-muted"><img src="/static/small/{{bus.rating}}@2x.png"></h6>
+                  
               </div>
               <div class="card-body row d-flex flex-md-wrap justify-content-around">
                   <div class="col-md-6">
