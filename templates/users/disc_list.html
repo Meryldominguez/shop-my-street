@@ -1,31 +1,44 @@
 {% extends 'base.html' %}
-{% block title %} {{g.user}}'s Discoveries {% endblock %}
-
+{% block title %} {{g.user.username}}'s Discoveries {% endblock %}
 {% block content %}
+
 <div class="container">
     <h2>My Discoveries</h2>
     <div class="list-group">
         {% for disc in g.user.discoveries %}
-    
-        <a href="/business/{{disc.business.id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-          <div class="d-flex w-100 justify-content-between">
+        <div class="list-group-item list-group-item-action d-flex flex-row flex-wrap align-items-center justify-content-between">
+          <div class="flex-shrink-1 flex-wrap justify-content-between">
             <h5 class="mb-1">{{disc.business.name}}</h5>
-            {% if disc.favorite %}
-           <i class="fas fa-star text-info">
-
-           </i>
-            {% endif %}
-
+          
+          <small>{{disc.timestamp}}</small>
           </div>
+          <div>
           <p class="mb-1">
               {% if disc.notes %}
               {{disc.notes}}
               {% else %}
               No Notes on this Discovery
               {% endif %}
-            </p>
-          <!-- <small>Timestamp?</small> -->
-        </a>
+          </p>
+         </div>
+          <div id="buttons" class="d-flex flex-row">
+            {% if disc.favorite %}
+           <i class="fas fa-star text-secondary" data-toggle="tooltip" data-placement="top" title="This is a Favorite of yours">
+           </i>
+            {% endif %}
+          <form action="/business/{{disc.business.id}}">
+            <button class="btn btn-sm btn-outline-secondary flex-nowrap">More Info</button>
+            </form>
+            <form method="GET" action="/discovery/{{g.user.id}}/edit/{{disc.business.id}}">
+            <button type="submit" class="btn btn-sm btn-outline-info flex-nowrap" >
+            Edit my Discovery!
+            </button></form>
+            <form method="POST" action="/discovery/delete/{{disc.business.id}}">
+              <input name="origin" type="hidden" value="/discovery/{{g.user.id}}">
+              <button class="btn btn-sm btn-outline-primary flex-nowrap">Delete Discovery</button>
+            </form>
+          </div>
+        </div>
         {% endfor %}
       </div>
     

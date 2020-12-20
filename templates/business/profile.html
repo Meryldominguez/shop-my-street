@@ -33,12 +33,12 @@
                         </a>
                       </div>
                       <small class="ml">
-                          {% if db_bus in user.businesses %}
+                          {% if business in user.businesses %}
                           <button type="button" class="btn-sm btn btn-info" data-toggle="modal" data-target="#DiscoveryModal">
                           Edit my Discovery!
                           </button>
                           {% else %}
-                          <form id="add/{{db_bus.id}}" class="disc-form">
+                          <form id="add/{{business.id}}" class="disc-form">
                           <button 
                           type="submit" class=" btn-sm btn-primary" data-toggle="modal"
                           data-target="#DiscoveryModal">
@@ -49,7 +49,7 @@
                       </small>
                   </div>
                   <br>
-                  <h6 class="card-subtitle text-muted"><img src="/static/small/{{business.rating}}@2x.png"></h6>
+                  <h6 class="card-subtitle text-muted"><img src="/static/small/{{bus.rating}}@2x.png"></h6>
               </div>
               <div class="card-body row d-flex flex-md-wrap justify-content-around">
                   <div class="col-md-6">
@@ -57,22 +57,22 @@
                         <tbody>
                         <tr class="table-light">
                             <th scope="row">Phone</th>
-                            <td>{{business.phone}}</td>
+                            <td>{{bus.phone}}</td>
                         </tr>
                         <tr class="table-light">
                             <th scope="row">Address</th>
-                            <td>{{business.address[0]}}
+                            <td>{{bus.address[0]}}
                               <br>
-                              {{business.address[1]}}
+                              {{bus.address[1]}}
                             </td>
                         </tr>
-                        {% if business.hours %}
+                        {% if bus.hours %}
                         <tr class="table-light">
                           
                             <th scope="row">Hours</th>
                             <td>
                               <ul class="list-group list-group-flush">
-                              {% for day in business.hours %}
+                              {% for day in bus.hours %}
                               <li class="list-group-item d-flex justify-content-between align-items-center">
                                 {{day}}
                               </li>
@@ -94,15 +94,15 @@
                     </table>
                   </div>
                   <div class="col">
-                  {% if db_bus in g.user.businesses %}
+                  {% if business in g.user.businesses %}
                         <div>
                             <h5>Notes : </h5>
                             <p>{{disc.notes}}</p>
                         </div>
                   {% endif %}
-                  {% if business.photos %}
+                  {% if bus.photos %}
                     <div>
-                      {% for img in business.photos %}
+                      {% for img in bus.photos %}
                       <img src="{{img}}"style="width: 200px; height: 200px" alt="an image of {{business.name}}" class="img-thumbnail img">
                       {% endfor %}
                     </div>
