@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %} {{user.name}}'s Discovery: {{disc.business.name}}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Discovery of: </h2><h1>{{disc.business.name}}</h1>
+    <br>
+    <form id="disc-edit-form" action="/discovery/edit/{{disc.business.id}}" method="POST">
+
+      {{ form.csrf_token }}
+    
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span>
+      {% endfor %}
+      <div class="form-group">
+      {{field.label}}
+      {{ field(placeholder=field.label.text, class="form-control") }}
+      </div>
+    {% endfor %}
+
+    </form>
+  
+  <div class=" justify-content-center">
+    <form method="POST" action="/discovery/delete/{{disc.business.id}}">
+      <input name="origin" type="hidden" value="/discovery/{{user.id}}">
+        <button type="submit" formaction="/discovery/delete/{{disc.business.id}}"class="btn btn-primary">
+          Delete this Discovery
+        </button>
+    </form>
+    <form method="GET" action="/business/{{disc.business.id}}">
+      <button type="submit" class="btn btn-secondary">Close</button>  
+    </form>
+    <button form="disc-edit-form" type="submit" class="btn btn-primary">
+      Save Discovery
+    </button>
+  </div>
+
+</div>
+
+{% endblock %}
