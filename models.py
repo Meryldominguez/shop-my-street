@@ -54,14 +54,7 @@ class User(db.Model):
         db.Text,
         nullable=False,
     )
-    
 
-
-
-
-    # https://pypi.org/project/geopy/
-
-    
     def get_location_coords(self, address):
         import googlemaps
 
