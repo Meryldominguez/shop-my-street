@@ -62,6 +62,13 @@ function handleResponse(resp) {
               <form action="/business/${bus.id}">
               <button class="btn btn-outline-secondary">More Info</>
               </form>
+              <form id="quick-add-disc">
+              <button id="${bus.id}"
+              type="submit"
+              class="quick-add-disc btn btn-outline-primary">
+              Quick add to Discoveries
+              </button>
+              </form>
             </div>
           </div>`);
       }
@@ -75,6 +82,12 @@ function handleResponse(resp) {
     }
   }
 }
+$('#quick-add-disc').on('submit', async (evt)=>{
+  evt.preventDefault();
+  console.log('hello');
+  console.log(evt.target);
+  resp = await axios.post('/discovery/add');
+})
 
 
 $('#searchform').on('submit', async (evt)=>{
@@ -92,8 +105,6 @@ $('.disc-form').on('submit', async (evt)=>{
 
 
 // UTILS
-
-
 /**
  * Return to the previous window
  * @param {int} num number of windows to go back
