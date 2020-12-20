@@ -294,6 +294,7 @@ def delete_user():
 def business_show(business_id):
     """Show a business profile"""
     db_bus = Business.query.get_or_404(business_id)
+    
 
     req = json.loads(requests.get(api_url+db_bus.yelp_id ,headers={"Authorization": f"Bearer {API_KEY}"}).text)
     
@@ -367,13 +368,6 @@ def edit_discovery(business_id):
     form=DiscoveryForm(obj=disc)
     route = form.origin.data
     if form.validate_on_submit():
-        if not disc:
-            disc=Discovery(user_id=g.user.id,business_id=business_id)
-            disc.notes=form.notes.data
-            disc.favorite= form.favorite.data
-            db.session.add(disc)
-            db.session.commit()
-            return redirect(f"/business/{business_id}")
         disc.notes=form.notes.data
         disc.favorite= form.favorite.data
         db.session.add(disc)

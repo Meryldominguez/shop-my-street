@@ -41,14 +41,16 @@ function handleResponse(resp) {
                     ${bus['name']}
                     </h4> 
                     <smaller class= "float-right">
-                    <img src="/static/small/${bus.rating}}@2x.png">
+                    <img src="/static/small/${bus.rating}.png">
                     </smaller>
                     <h6>
                     ${formatCategories(bus.categories)}</h6>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                    ${bus.address[0]}<br>${bus.address[1]}
+                    ${bus.address[0] ? bus.address[0]: ''}
+                    <br>
+                    ${bus.address[1]? bus.address[1]: ''}
                     </h5>
                 <h6>${bus.phone}</h6>
 
