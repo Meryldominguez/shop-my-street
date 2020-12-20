@@ -123,12 +123,12 @@ class Discovery(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id')
+        db.ForeignKey('users.id',ondelete="cascade"))
     )
 
     business_id = db.Column(
         db.Integer,
-        db.ForeignKey('businesses.id')
+        db.ForeignKey('businesses.id',ondelete="cascade"))
     )
     favorite = db.Column(
         db.Boolean,
