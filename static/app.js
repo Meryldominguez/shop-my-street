@@ -121,7 +121,7 @@ $('.disc-form').on('submit', async (evt)=>{
  * @param {int} num number of windows to go back
 **/
 function goBack(num) {
-  window.history.go(-num);
+  window.location.href=document.referrer;
 }
 
 $(function() {
